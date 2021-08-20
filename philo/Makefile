@@ -2,6 +2,7 @@ NAME	=	philo
 
 SRCS	=	main.c		\
 			parcer.c	\
+			day.c		\
 
 HEADER	=	philo.h
 

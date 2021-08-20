@@ -3,6 +3,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
+
 
 /*
 	[int] count philo
@@ -13,20 +15,25 @@
 */
 typedef struct s_config
 {
-	int	count_philo;
-	int	ttd;
-	int	tte;
-	int	tts;
-	int	ene;
-	int	die;
+	int				count_philo;
+	int				ttd;
+	int				tte;
+	int				tts;
+	int				ene;
+	int				die;
+	int				start_time;
+	pthread_mutex_t	message;
 }				t_config;
 
 typedef struct s_philo
 {
+	int				id;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
-	t_config	*conf;
+	t_config		*config;
 }				t_philo;
 
-void	parce(int argc, char **argv, t_config *new);
+t_philo	*parce(int argc, char **argv, t_config *new);
+int		start_day(t_philo *philos);
+
 #endif

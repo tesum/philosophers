@@ -27,9 +27,18 @@ int	ft_atoi(const char *str)
 	return (result * minus);
 }
 
-void	parce(int argc, char **argv, t_config *new)
+int	get_time(void)
 {
-	// t_config	new;
+	struct timeval	ct;
+
+	gettimeofday(&ct, NULL);
+	return(ct.tv_sec * 1000 + ct.tv_usec / 1000);
+}
+
+t_philo	*parce(int argc, char **argv, t_config *new)
+{
+	t_philo	*philo;
+	int		i;
 
 	new->count_philo = ft_atoi(argv[1]);
 	new->ttd = ft_atoi(argv[2]);
@@ -37,6 +46,17 @@ void	parce(int argc, char **argv, t_config *new)
 	new->tts = ft_atoi(argv[4]);
 	new->ene = 0;
 	new->die = 0;
+	new->start_time = get_time();
 	if (argc == 6)
 		new->ene = ft_atoi(argv[5]);
+	philo = malloc(sizeof(t_philo) * new->count_philo);
+	// if (philo == (void*)-1)
+	// 	return ;
+	i = 0;
+	while (i < new->count_philo)
+	{
+		philo[i].config = new;
+		i++;
+	}
+	return(philo);
 }

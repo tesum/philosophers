@@ -6,12 +6,13 @@ pthread_mutex_t	*init_forks(t_config config, t_philo *philos)
 	pthread_mutex_t	*fork;
 
 	fork = malloc(sizeof(pthread_mutex_t) * config.count_philo);
-	if (fork == (void *)-1)
+	if (!fork)
 		return (NULL);
 	i = 0;
 	while (i < config.count_philo)
 	{
-		pthread_mutex_init(&fork[i], NULL);
+		if (pthread_mutex_init(&fork[i], NULL))
+			return (NULL);
 		i++;
 	}
 	i = 0;
@@ -31,12 +32,27 @@ int	main(int argc, char **argv)
 	pthread_mutex_t	*fork;
 	t_config		config;
 	t_philo			*philos;
+	int				i;
 
-	if (argc < 5)
+	if (argc < 5 || argc > 6)
 		return (1);
-	philos = parce(argc, argv, &config);
-	printf("%d | %d | %d | %d | %d | %d\n", config.count_philo, config.ttd, config.tte, config.tts, config.ene, config.start_time);
+	if (parce(argc, argv, &config) == 1)
+		return (logs("Error", RED, NULL));
+	philos = malloc(sizeof(t_philo) * config.count_philo);
+	if (!philos)
+		return (logs("Error", RED, philos));
+	i = 0;
+	while (i < config.count_philo)
+	{
+		philos[i].id = i + 1;
+		philos[i].last_eat = config.start_time + config.ttd;
+		philos[i].config = &config;
+		i++;
+	}
 	fork = init_forks(config, philos);
-	start_day(philos);
+	if (!fork)
+		return (logs("Error", RED, philos));
+	if (start_day(philos) == 1)
+		return (logs("Error", RED, philos));
 	return (0);
 }

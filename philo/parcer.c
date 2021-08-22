@@ -35,34 +35,23 @@ int	get_time(int start)
 	return((ct.tv_sec * 1000 + ct.tv_usec / 1000) - start);
 }
 
-t_philo	*parce(int argc, char **argv, t_config *new)
+int	parce(int argc, char **argv, t_config *new)
 {
-	t_philo	*philo;
-	int		i;
-
 	new->count_philo = ft_atoi(argv[1]);
 	new->ttd = ft_atoi(argv[2]);
 	new->tte = ft_atoi(argv[3]);
 	new->tts = ft_atoi(argv[4]);
-	new->ene = 0;
+	new->ene = -1;
 	new->die = 0;
+	new->eat_now = 0;
 	new->start_time = get_time(0);
 	if (argc == 6)
 		new->ene = ft_atoi(argv[5]);
-	philo = malloc(sizeof(t_philo) * new->count_philo);
-	// if (philo == (void*)-1)
-	// 	return ;
-	i = 0;
-	while (i < new->count_philo)
-	{
-		philo[i].id = i + 1;
-		philo[i].last_eat = new->start_time + new->ttd;
-		philo[i].config = new;
-		i++;
-	}
-	pthread_mutex_init(&new->message, NULL);
-	// printf("%d | %d | %d\n", philo[1].config->count_philo, philo[1].config->tts, philo[1].config->ene);
-	return(philo);
+	if (new->count_philo < 0 || new->count_philo > 200 || new->ttd < 0 || new->tte < 0 || new->tts < 0 || new->ene < -1)
+		return (1);
+	if (pthread_mutex_init(&new->message, NULL))
+		return (1);
+	return (0);
 }
 
 void	my_sleep(int time)
@@ -76,13 +65,19 @@ void	my_sleep(int time)
 	}
 }
 
-void	logs(char *status, char *color, t_philo *philo)
+int		logs(char *status, char *color, t_philo *philo)
 {
 	int	time;
 
+	if (philo == NULL)
+	{
+		printf("%s%s\n", color, status);
+		return (1);
+	}
 	time = philo->config->start_time;
 	pthread_mutex_lock(&philo->config->message);
 	printf("%s%d %d %s\n", color, get_time(time), philo->id, status);
 	if (philo->config->die != 1)
 		pthread_mutex_unlock(&philo->config->message);
+	return (0);
 }

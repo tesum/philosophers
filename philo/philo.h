@@ -40,6 +40,7 @@ typedef struct s_config
 	int				ene;
 	int				die;
 	int				start_time;
+	int				eat_now;
 	pthread_mutex_t	message;
 }				t_config;
 
@@ -53,12 +54,12 @@ typedef struct s_philo
 	int				last_eat;
 }				t_philo;
 
-t_philo	*parce(int argc, char **argv, t_config *new);
+int		parce(int argc, char **argv, t_config *new);
 int		start_day(t_philo *philos);
 void	*die(void *philos);
 int		get_time(int start);
 void	my_sleep(int time);
-void	logs(char *status, char *color, t_philo *philo);
+int		logs(char *status, char *color, t_philo *philo);
 
 
 

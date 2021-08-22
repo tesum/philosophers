@@ -28,15 +28,14 @@ void	*die(void *philos)
 				logs(DIE, RED, philo);
 				exit(1);
 			}
+			if (cnf->eat_now >= cnf->ene * cnf->count_philo && cnf->ene > 0)
+			{
+				pthread_mutex_lock(&philo->config->message);
+				printf("End\n");
+				exit(1);
+			}
 			i++;
 		}
-		// if (philo->config->die == 1)
-		// {
-		// 	printf("He is die :(\n");
-		// 	i += 1;
-		// 	exit(1);
-		// 	return ((void *)1);
-		// }
 	}
 	return ((void *)0);
 }
@@ -51,8 +50,7 @@ void	eating(t_philo *philo)
 	logs(FORK, WHITE, philo);
 	logs(EAT, CYAN, philo);
 	philo->last_eat = get_time(time);
-		// philo->last_eat = get_time() + philo->config->ttd;
-
+	philo->config->eat_now += 1;
 	my_sleep(philo->config->tte);
 	pthread_mutex_unlock(philo->left);
 	pthread_mutex_unlock(philo->right);
@@ -61,17 +59,10 @@ void	eating(t_philo *philo)
 void	*day(void *philo_)
 {
 	t_philo *philo;
-	int	time;
 
 	philo = (t_philo *)philo_;
-	time = philo->config->start_time;
 	while(1)
 	{
-		// if (get_time() - time - philo->last_eat + philo->config->tts > philo->config->ttd)
-		// {
-		// 	philo->config->die = 1;
-		// 	logs(DIE, RED, philo);
-		// }
 		eating(philo);
 		logs(SLEEP, PURPLE, philo);
 		my_sleep(philo->config->tts);
@@ -87,20 +78,17 @@ int	start_day(t_philo *philos)
 	
 
 	i = 0;
-	pthread_create(&tid, NULL, die, (void *)&philos[0]);
-	printf("count = %d\n", philos[1].config->count_philo);
+	if (pthread_create(&tid, NULL, die, (void *)&philos[0]))
+		return (1);
 	while (i < philos[i].config->count_philo - 1)
 	{
-		pthread_create(&philos->tid, NULL, day, (void *)&philos[i]);
-		// pthread_detach(philos->tid);
+		if (pthread_create(&philos->tid, NULL, day, (void *)&philos[i]))
+			return (1);
 		usleep(50);
-	// 	printf("kek\n");
-		// usleep(50);
 		i++;
 	}
-		pthread_create(&philos->tid, NULL, day, (void *)&philos[i]);
-
+	if (pthread_create(&philos->tid, NULL, day, (void *)&philos[i]))
+		return (1);
 	pthread_join(tid, NULL);
-
 	return (0);
 }

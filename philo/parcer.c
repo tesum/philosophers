@@ -27,12 +27,12 @@ int	ft_atoi(const char *str)
 	return (result * minus);
 }
 
-int	get_time(void)
+int	get_time(int start)
 {
 	struct timeval	ct;
 
 	gettimeofday(&ct, NULL);
-	return(ct.tv_sec * 1000 + ct.tv_usec / 1000);
+	return((ct.tv_sec * 1000 + ct.tv_usec / 1000) - start);
 }
 
 t_philo	*parce(int argc, char **argv, t_config *new)
@@ -46,7 +46,7 @@ t_philo	*parce(int argc, char **argv, t_config *new)
 	new->tts = ft_atoi(argv[4]);
 	new->ene = 0;
 	new->die = 0;
-	new->start_time = get_time();
+	new->start_time = get_time(0);
 	if (argc == 6)
 		new->ene = ft_atoi(argv[5]);
 	philo = malloc(sizeof(t_philo) * new->count_philo);
@@ -56,7 +56,7 @@ t_philo	*parce(int argc, char **argv, t_config *new)
 	while (i < new->count_philo)
 	{
 		philo[i].id = i + 1;
-		philo[i].last_eat = 0;
+		philo[i].last_eat = new->start_time + new->ttd;
 		philo[i].config = new;
 		i++;
 	}
@@ -67,13 +67,12 @@ t_philo	*parce(int argc, char **argv, t_config *new)
 
 void	my_sleep(int time)
 {
-	int	i;
+	time_t	end;
 
-	i = 0;
-	while (i < time)
+	end = get_time(0) + time;
+	while (get_time(0) < end)
 	{
-		usleep(1);
-		i++;
+		usleep(10);
 	}
 }
 
@@ -81,10 +80,9 @@ void	logs(char *status, char *color, t_philo *philo)
 {
 	int	time;
 
-	if (philo->config->die == 1)
-		return ;
 	time = philo->config->start_time;
 	pthread_mutex_lock(&philo->config->message);
-	printf("%s%d %d %s\n", color, get_time() - time, philo->id, status);
-	pthread_mutex_unlock(&philo->config->message);
+	printf("%s%d %d %s\n", color, get_time(time), philo->id, status);
+	if (philo->config->die != 1)
+		pthread_mutex_unlock(&philo->config->message);
 }

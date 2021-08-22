@@ -1,19 +1,42 @@
 #include "philo.h"
 
+void	pdie(t_philo *philo, t_config	*cnf)
+{
+	if (get_time(cnf->start_time) - philo->last_eat > cnf->ttd)
+	{
+		philo->config->die = 1;
+		printf("He is die :(\n");
+		logs(DIE, RED, philo);
+		exit(1);
+	}
+}
 void	*die(void *philos)
 {
 	t_philo *philo;
+	t_config	*cnf;
 	int i = 0;
 	philo = philos;
+	cnf = philo->config;
 	while (1)
 	{
-		if (philo->config->die == 1)
+		i = 0;
+		while (i < cnf->count_philo)
 		{
-			printf("He is die :(\n");
-			i += 1;
-			exit(1);
-			return ((void *)1);
+			if (get_time(cnf->start_time) - philo->last_eat > cnf->ttd)
+			{
+				philo->config->die = 1;
+				logs(DIE, RED, philo);
+				exit(1);
+			}
+			i++;
 		}
+		// if (philo->config->die == 1)
+		// {
+		// 	printf("He is die :(\n");
+		// 	i += 1;
+		// 	exit(1);
+		// 	return ((void *)1);
+		// }
 	}
 	return ((void *)0);
 }
@@ -27,8 +50,10 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(philo->right);
 	logs(FORK, WHITE, philo);
 	logs(EAT, CYAN, philo);
+	philo->last_eat = get_time(time);
+		// philo->last_eat = get_time() + philo->config->ttd;
+
 	my_sleep(philo->config->tte);
-	philo->last_eat = get_time() - time;
 	pthread_mutex_unlock(philo->left);
 	pthread_mutex_unlock(philo->right);
 }
@@ -42,11 +67,11 @@ void	*day(void *philo_)
 	time = philo->config->start_time;
 	while(1)
 	{
-		if (get_time() - time - philo->last_eat > philo->config->ttd)
-		{
-			logs(DIE, RED, philo);
-			philo->config->die = 1;
-		}
+		// if (get_time() - time - philo->last_eat + philo->config->tts > philo->config->ttd)
+		// {
+		// 	philo->config->die = 1;
+		// 	logs(DIE, RED, philo);
+		// }
 		eating(philo);
 		logs(SLEEP, PURPLE, philo);
 		my_sleep(philo->config->tts);

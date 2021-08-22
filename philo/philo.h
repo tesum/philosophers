@@ -56,7 +56,7 @@ typedef struct s_philo
 t_philo	*parce(int argc, char **argv, t_config *new);
 int		start_day(t_philo *philos);
 void	*die(void *philos);
-int		get_time(void);
+int		get_time(int start);
 void	my_sleep(int time);
 void	logs(char *status, char *color, t_philo *philo);
 

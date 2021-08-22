@@ -32,7 +32,7 @@ int	get_time(int start)
 	struct timeval	ct;
 
 	gettimeofday(&ct, NULL);
-	return((ct.tv_sec * 1000 + ct.tv_usec / 1000) - start);
+	return ((ct.tv_sec * 1000 + ct.tv_usec / 1000) - start);
 }
 
 int	parce(int argc, char **argv, t_config *new)
@@ -47,7 +47,8 @@ int	parce(int argc, char **argv, t_config *new)
 	new->start_time = get_time(0);
 	if (argc == 6)
 		new->ene = ft_atoi(argv[5]);
-	if (new->count_philo < 0 || new->count_philo > 200 || new->ttd < 0 || new->tte < 0 || new->tts < 0 || new->ene < -1)
+	if (new->count_philo < 0 || new->count_philo > 200 || \
+		new->ttd < 0 || new->tte < 0 || new->tts < 0 || new->ene < -1)
 		return (1);
 	if (pthread_mutex_init(&new->message, NULL))
 		return (1);
@@ -65,7 +66,7 @@ void	my_sleep(int time)
 	}
 }
 
-int		logs(char *status, char *color, t_philo *philo)
+int	logs(char *status, char *color, t_philo *philo)
 {
 	int	time;
 

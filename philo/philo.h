@@ -61,6 +61,4 @@ int		get_time(int start);
 void	my_sleep(int time);
 int		logs(char *status, char *color, t_philo *philo);
 
-
-
 #endif

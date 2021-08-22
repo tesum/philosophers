@@ -58,24 +58,23 @@ void	eating(t_philo *philo)
 
 void	*day(void *philo_)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)philo_;
-	while(1)
+	while (1)
 	{
 		eating(philo);
 		logs(SLEEP, PURPLE, philo);
 		my_sleep(philo->config->tts);
 		logs(THINK, YELLOW, philo);
 	}
-	return ((void*)0);
+	return ((void *)0);
 }
 
 int	start_day(t_philo *philos)
 {
 	int			i;
-	pthread_t		tid;
-	
+	pthread_t	tid;
 
 	i = 0;
 	if (pthread_create(&tid, NULL, die, (void *)&philos[0]))

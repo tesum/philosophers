@@ -2,10 +2,27 @@
 # define PHILO_H
 # include <stdio.h>
 # include <stdlib.h>
-# 	include <unistd.h>
+# include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
 
+/*
+	FORK	- WHITE
+	EAT		- CYAN
+	SLEEP	- PURPLE
+	THINK	- YELLLOW
+	DIE		- RED
+*/
+# define	FORK	" has taken a fork"
+# define	EAT		" is eating"
+# define	SLEEP	" is sleeping"
+# define	THINK	" is thinking"
+# define	DIE		" died"
+# define	RED		"\033[0;31m"
+# define	YELLOW	"\033[0;33m"
+# define	PURPLE	"\033[0;35m"
+# define	CYAN	"\033[0;36m"
+# define	WHITE	"\033[0;37m"
 
 /*
 	[int] count philo
@@ -29,15 +46,20 @@ typedef struct s_config
 typedef struct s_philo
 {
 	pthread_t		tid;
-	int				id;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
 	t_config		*config;
+	int				id;
+	int				last_eat;
 }				t_philo;
 
 t_philo	*parce(int argc, char **argv, t_config *new);
 int		start_day(t_philo *philos);
 void	*die(void *philos);
+int		get_time(void);
+void	my_sleep(int time);
+void	logs(char *status, char *color, t_philo *philo);
+
 
 
 #endif

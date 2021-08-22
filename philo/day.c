@@ -11,27 +11,46 @@ void	*die(void *philos)
 		{
 			printf("He is die :(\n");
 			i += 1;
+			exit(1);
 			return ((void *)1);
 		}
 	}
 	return ((void *)0);
 }
 
+void	eating(t_philo *philo)
+{
+	int	time;
+
+	time = philo->config->start_time;
+	pthread_mutex_lock(philo->left);
+	pthread_mutex_lock(philo->right);
+	logs(FORK, WHITE, philo);
+	logs(EAT, CYAN, philo);
+	my_sleep(philo->config->tte);
+	philo->last_eat = get_time() - time;
+	pthread_mutex_unlock(philo->left);
+	pthread_mutex_unlock(philo->right);
+}
+
 void	*day(void *philo_)
 {
 	t_philo *philo;
+	int	time;
 
 	philo = (t_philo *)philo_;
-	int i = 0;
+	time = philo->config->start_time;
 	while(1)
 	{
-	pthread_mutex_lock(philo->left);
-	pthread_mutex_lock(philo->right);
-		printf("philo %d say %d\n", philo->id, i);
-		usleep(50);
-		i++;
-	pthread_mutex_unlock(philo->left);
-	pthread_mutex_unlock(philo->right);
+		if (get_time() - time - philo->last_eat > philo->config->ttd)
+		{
+			logs(DIE, RED, philo);
+			philo->config->die = 1;
+		}
+		eating(philo);
+		logs(SLEEP, PURPLE, philo);
+		my_sleep(philo->config->tts);
+		logs(THINK, YELLOW, philo);
 	}
 	return ((void*)0);
 }
@@ -49,8 +68,9 @@ int	start_day(t_philo *philos)
 	{
 		pthread_create(&philos->tid, NULL, day, (void *)&philos[i]);
 		// pthread_detach(philos->tid);
-	// 	printf("kek\n");
 		usleep(50);
+	// 	printf("kek\n");
+		// usleep(50);
 		i++;
 	}
 		pthread_create(&philos->tid, NULL, day, (void *)&philos[i]);

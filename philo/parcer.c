@@ -56,9 +56,35 @@ t_philo	*parce(int argc, char **argv, t_config *new)
 	while (i < new->count_philo)
 	{
 		philo[i].id = i + 1;
+		philo[i].last_eat = 0;
 		philo[i].config = new;
 		i++;
 	}
+	pthread_mutex_init(&new->message, NULL);
 	// printf("%d | %d | %d\n", philo[1].config->count_philo, philo[1].config->tts, philo[1].config->ene);
 	return(philo);
+}
+
+void	my_sleep(int time)
+{
+	int	i;
+
+	i = 0;
+	while (i < time)
+	{
+		usleep(1);
+		i++;
+	}
+}
+
+void	logs(char *status, char *color, t_philo *philo)
+{
+	int	time;
+
+	if (philo->config->die == 1)
+		return ;
+	time = philo->config->start_time;
+	pthread_mutex_lock(&philo->config->message);
+	printf("%s%d %d %s\n", color, get_time() - time, philo->id, status);
+	pthread_mutex_unlock(&philo->config->message);
 }

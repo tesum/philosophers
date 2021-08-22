@@ -55,8 +55,10 @@ t_philo	*parce(int argc, char **argv, t_config *new)
 	i = 0;
 	while (i < new->count_philo)
 	{
+		philo[i].id = i + 1;
 		philo[i].config = new;
 		i++;
 	}
+	// printf("%d | %d | %d\n", philo[1].config->count_philo, philo[1].config->tts, philo[1].config->ene);
 	return(philo);
 }

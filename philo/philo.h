@@ -2,6 +2,7 @@
 # define PHILO_H
 # include <stdio.h>
 # include <stdlib.h>
+# 	include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
 
@@ -27,6 +28,7 @@ typedef struct s_config
 
 typedef struct s_philo
 {
+	pthread_t		tid;
 	int				id;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
@@ -35,5 +37,7 @@ typedef struct s_philo
 
 t_philo	*parce(int argc, char **argv, t_config *new);
 int		start_day(t_philo *philos);
+void	*die(void *philos);
+
 
 #endif

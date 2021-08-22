@@ -7,12 +7,31 @@ int	main(int argc, char **argv)
 	t_philo			*philos;
 
 	printf("lol\n");
+	if (argc < 5)
+		return (1);
 	philos = parce(argc, argv, &config);
 	printf("%d | %d | %d | %d | %d | %d\n", config.count_philo, config.ttd, config.tte, config.tts, config.ene, config.start_time);
 
 	fork = malloc(sizeof(pthread_mutex_t) * config.count_philo);
 	if (fork == (void *)-1)
 		return (1);
+
+	int	i = 0;
+	while (i < config.count_philo)
+	{
+		pthread_mutex_init(&fork[i], NULL);
+		i++;
+	}
+	
+	i = 0;
+	while (i < config.count_philo)
+	{
+		philos[i].left = &fork[i];
+		philos[i].right = &fork[i + 1];
+		i++;
+	}
+	philos[i].left = &fork[i];
+	philos[i].right = &fork[0];
 	start_day(philos);
 	return (0);
 }

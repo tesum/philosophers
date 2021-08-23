@@ -1,20 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   day.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/23 13:38:03 by demilan           #+#    #+#             */
+/*   Updated: 2021/08/23 13:38:35 by demilan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void	pdie(t_philo *philo, t_config	*cnf)
+int	pdie(t_philo *philo, t_config *cnf)
 {
 	if (get_time(cnf->start_time) - philo->last_eat > cnf->ttd)
 	{
 		philo->config->die = 1;
-		printf("He is die :(\n");
 		logs(DIE, RED, philo);
-		exit(1);
+		return (1);
 	}
+	return (0);
 }
+
 void	*die(void *philos)
 {
-	t_philo *philo;
+	t_philo		*philo;
 	t_config	*cnf;
-	int i = 0;
+	int			i;
+
 	philo = philos;
 	cnf = philo->config;
 	while (1)
@@ -22,17 +36,12 @@ void	*die(void *philos)
 		i = 0;
 		while (i < cnf->count_philo)
 		{
-			if (get_time(cnf->start_time) - philo->last_eat > cnf->ttd)
-			{
-				philo->config->die = 1;
-				logs(DIE, RED, philo);
-				exit(1);
-			}
+			if (pdie(philo, cnf))
+				return ((void *) 1);
 			if (cnf->eat_now >= cnf->ene * cnf->count_philo && cnf->ene > 0)
 			{
 				pthread_mutex_lock(&philo->config->message);
-				printf("End\n");
-				exit(1);
+				return ((void *) 1);
 			}
 			i++;
 		}

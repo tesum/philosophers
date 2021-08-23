@@ -1,4 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/23 13:38:08 by demilan           #+#    #+#             */
+/*   Updated: 2021/08/23 13:38:09 by demilan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
+
+int	get_time(int start)
+{
+	struct timeval	ct;
+
+	gettimeofday(&ct, NULL);
+	return ((ct.tv_sec * 1000 + ct.tv_usec / 1000) - start);
+}
 
 pthread_mutex_t	*init_forks(t_config config, t_philo *philos)
 {
@@ -53,7 +73,7 @@ int	main(int argc, char **argv)
 	t_philo			*philos;
 
 	if (argc < 5 || argc > 6)
-		return (1);
+		return (logs("Error", RED, NULL));
 	if (parce(argc, argv, &config) == 1)
 		return (logs("Error", RED, NULL));
 	philos = init_philo(&config);

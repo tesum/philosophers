@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parcer.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/23 13:38:11 by demilan           #+#    #+#             */
+/*   Updated: 2021/08/23 13:38:12 by demilan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	ft_atoi(const char *str)
@@ -27,16 +39,25 @@ int	ft_atoi(const char *str)
 	return (result * minus);
 }
 
-int	get_time(int start)
+int	mid(char *str)
 {
-	struct timeval	ct;
+	int	i;
 
-	gettimeofday(&ct, NULL);
-	return ((ct.tv_sec * 1000 + ct.tv_usec / 1000) - start);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			i++;
+		else
+			return (1);
+	}
+	return (0);
 }
 
 int	parce(int argc, char **argv, t_config *new)
 {
+	if (mid(argv[1]) || mid(argv[2]) || mid(argv[3]) || mid(argv[4]))
+		return (1);
 	new->count_philo = ft_atoi(argv[1]);
 	new->ttd = ft_atoi(argv[2]);
 	new->tte = ft_atoi(argv[3]);
@@ -46,7 +67,11 @@ int	parce(int argc, char **argv, t_config *new)
 	new->eat_now = 0;
 	new->start_time = get_time(0);
 	if (argc == 6)
+	{
+		if (mid(argv[5]))
+			return (1);
 		new->ene = ft_atoi(argv[5]);
+	}
 	if (new->count_philo < 0 || new->count_philo > 200 || \
 		new->ttd < 0 || new->tte < 0 || new->tts < 0 || new->ene < -1)
 		return (1);

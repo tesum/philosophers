@@ -1,20 +1,23 @@
 NAME	=	philo
 
-SRCS	=	main.c		\
-			parcer.c	\
-			day.c		\
+SRCS	=	srcs/main.c		\
+			srcs/parcer.c	\
+			srcs/day.c		\
 
-HEADER	=	philo.h
+HEADER	=	srcs/philo.h
 
 OBJ		=	$(patsubst %.c, %.o, $(SRCS))
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -I.
 RM		=	rm -f
+CC		=	gcc
 
 all		:	$(NAME)
 
-$(NAME)	:	$(OBJ) $(HEADER)
-			gcc $(OBJ) -o $(NAME)
+$(OBJ)	:	$(HEADER)
+
+$(NAME)	:	$(OBJ)
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 
 clean	:
 			$(RM) $(OBJ)

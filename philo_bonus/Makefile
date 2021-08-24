@@ -8,7 +8,7 @@ HEADER	=	srcs/philo_bonus.h
 
 OBJ		=	$(patsubst %.c, %.o, $(SRCS))
 
-CFLAGS	=	 -I. #-Wall -Wextra -Werror
+CFLAGS	=	 -I. -Wall -Wextra -Werror
 RM		=	rm -f
 CC		=	gcc
 

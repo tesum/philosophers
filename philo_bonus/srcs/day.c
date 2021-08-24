@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   day.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arsenijdrozdov <arsenijdrozdov@student.    +#+  +:+       +#+        */
+/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:03 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/24 14:21:49 by arsenijdroz      ###   ########.fr       */
+/*   Updated: 2021/08/24 18:12:43 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	pdie(t_philo *philo, t_config *cnf)
 	if (get_time(cnf->start_time) - philo->last_eat > cnf->ttd)
 	{
 		logs(DIE, RED, philo);
+		sem_wait(philo->config->message);
 		philo->config->die = 1;
-		// sem_wait()
 		exit(0);
 		return (1);
 	}
@@ -33,25 +33,27 @@ void	*die(void *philos)
 
 	philo = philos;
 	cnf = philo->config;
+	i = 1;
 	while (1)
 	{
-		i = 0;
-		while (i < cnf->count_philo)
+		if (pdie(philo, cnf))
+			return ((void *) 1);
+		if (cnf->ene > 0 && philo->ceat > cnf->ene && i)
 		{
-			if (pdie(&philo[i], cnf))
-				return ((void *) 1);
-			if (cnf->eat_now >= cnf->ene * cnf->count_philo && cnf->ene > 0)
-			{
-				// pthread_mutex_lock(&philo->config->message);
-				return ((void *) 1);
-			}
-			i++;
+			sem_wait(cnf->eat_check);
+			i = 0;
 		}
+		// if (cnf->eat_now >= cnf->ene * cnf->count_philo && cnf->ene > 0)
+		// {
+		// 	sem_wait(cnf->message);
+		// 	exit(0);
+		// 	return ((void *) 1);
+		// }
 	}
 	return ((void *)0);
 }
 
-void	*day(void *philo_)
+void	day(void *philo_)
 {
 	t_philo	*philo;
 
@@ -65,6 +67,7 @@ void	*day(void *philo_)
 		logs(EAT, CYAN, philo);
 		philo->last_eat = get_time(philo->config->start_time);
 		philo->config->eat_now += 1;
+		philo->ceat += 1;
 		my_sleep(philo->config->tte);
 		sem_post(philo->config->fork);
 		sem_post(philo->config->fork);
@@ -72,7 +75,21 @@ void	*day(void *philo_)
 		my_sleep(philo->config->tts);
 		logs(THINK, YELLOW, philo);
 	}
-	return ((void *)0);
+}
+
+void	*cheack_eat(void *config)
+{
+	t_config	*cnf;
+	int			i;
+
+	i = 0;
+	cnf = (t_config *)config;
+	while (i < cnf->count_philo)
+	{
+		sem_wait(cnf->eat_check);
+		i++;
+	}
+	return (0);
 }
 
 int	start_day(t_philo *philos)
@@ -81,13 +98,15 @@ int	start_day(t_philo *philos)
 	pthread_t	tid;
 
 	i = 0;
-	if (pthread_create(&tid, NULL, die, (void *)&philos[0]))
-		return (1);	
-	while (i < philos[i].config->count_philo - 1)
+	if (philos->config->ene > 0)
+		pthread_create(&tid, NULL, cheack_eat, (void *)philos->config);
+	while (i < philos->config->count_philo)
 	{
 		philos->config->pid[i] = fork();
 		if (philos->config->pid[i] == 0)
 		{
+			if (pthread_create(&tid, NULL, die, (void *)&philos[i]))
+				return (1);
 			day(&philos[i]);
 			i = philos->config->count_philo;
 		}
@@ -100,6 +119,25 @@ int	start_day(t_philo *philos)
 	// if (pthread_create(&philos->tid, NULL, day, (void *)&philos[i]))
 	// 	return (1);
 	pthread_join(tid, NULL);
+	i = 0;
+	waitpid(0, NULL, 0);
+	while (i < philos->config->count_philo)
+	{
+		sem_post(philos->config->eat_check);
+		i++;
+	}
+	i = 0;
+	while (i < philos->config->count_philo)
+	{
+		kill(philos->config->pid[i], SIGTERM);
+		i++;
+	}
+	sem_close(philos->config->fork);
+	sem_close(philos->config->message);
+	sem_close(philos->config->eat_check);
+	sem_unlink("fork");
+	sem_unlink("eat_check");
+	sem_unlink("message");
 	return (0);
 }
 

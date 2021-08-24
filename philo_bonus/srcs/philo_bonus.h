@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arsenijdrozdov <arsenijdrozdov@student.    +#+  +:+       +#+        */
+/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:15 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/24 13:29:10 by arsenijdroz      ###   ########.fr       */
+/*   Updated: 2021/08/24 18:00:41 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <semaphore.h>
+# include <signal.h>
 
 /*
 	FORK	- WHITE
@@ -68,6 +69,7 @@ typedef struct s_philo
 	t_config	*config;
 	int			id;
 	int			last_eat;
+	int			ceat;
 	int			dead;
 }				t_philo;
 

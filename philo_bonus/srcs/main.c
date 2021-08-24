@@ -29,23 +29,24 @@ t_philo	*init_philo(t_config *config)
 
 int	main(int argc, char **argv)
 {
-	t_config		config;
+	t_config		*config;
 	t_philo			*philos;
 
 	if (argc < 5 || argc > 6)
 		return (logs("Error", RED, NULL));
-	parce(argc, argv, &config);
-	philos = init_philo(&config);
-	config.pid = malloc(sizeof(pid_t) * config.count_philo);
-	if (config.pid == 0)
+	config = malloc(sizeof(t_config));
+	parce(argc, argv, config);
+	philos = init_philo(config);
+	config->pid = malloc(sizeof(pid_t) * config->count_philo);
+	if (config->pid == 0)
 		return (logs("Error", RED, NULL));
 	sem_unlink("fork");
 	sem_unlink("message");
 	sem_unlink("eat_check");
-	config.fork = sem_open("fork", O_CREAT, S_IRWXU, config.count_philo);
-	config.message = sem_open("message", O_CREAT, S_IRWXU, 1);
-	config.eat_check = sem_open("eat_check", O_CREAT, S_IRWXU, 0);
-	if (!config.fork || !config.message || !config.eat_check)
+	config->fork = sem_open("fork", O_CREAT, S_IRWXU, config->count_philo);
+	config->message = sem_open("message", O_CREAT, S_IRWXU, 1);
+	config->eat_check = sem_open("eat_check", O_CREAT, S_IRWXU, 0);
+	if (!config->fork || !config->message || !config->eat_check)
 		exit(0);
 	if (start_day(philos) == 1)
 		return (logs("Error", RED, NULL));

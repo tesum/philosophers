@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:03 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/25 19:42:14 by demilan          ###   ########.fr       */
+/*   Updated: 2021/08/25 20:35:34 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*die(void *philos)
 		}
 		usleep(500);
 	}
-	return ((void *)0);
+	exit(0);
 }
 
 void	day(void *philo_)
@@ -89,7 +89,7 @@ void	*cheack_eat(void *philos)
 	sem_unlink("fork");
 	sem_unlink("eat_check");
 	sem_unlink("message");
-	return (0);
+	exit(0);
 }
 
 int	start_day(t_philo *philos)
@@ -111,10 +111,12 @@ int	start_day(t_philo *philos)
 			if (pthread_create(&philos[i].tid, NULL, die, (void *)&philos[i]))
 				return (1);
 			day(&philos[i]);
+			pthread_detach(philos[i].tid);
 			i = philos->config->count_philo;
 		}
 		i++;
 	}
+	pthread_join(tid, NULL);
 	return (0);
 }
 
@@ -141,7 +143,7 @@ void	all_clear(t_philo *philos, t_config	*cnf)
 	sem_unlink("fork");
 	sem_unlink("eat_check");
 	sem_unlink("message");
+	free(cnf->pid);
 	free(cnf);
 	free(philos);
-	exit(1);
 }

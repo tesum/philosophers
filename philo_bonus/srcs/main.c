@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/25 19:43:20 by demilan           #+#    #+#             */
+/*   Updated: 2021/08/25 19:43:21 by demilan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 int	get_time(int start)
@@ -50,6 +62,6 @@ int	main(int argc, char **argv)
 		exit(0);
 	if (start_day(philos) == 1)
 		return (logs("Error", RED, NULL));
-	// all_clear(philos, fork, config);
+	all_clear(philos, config);
 	return (0);
 }

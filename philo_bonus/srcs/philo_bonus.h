@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:15 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/24 18:00:41 by demilan          ###   ########.fr       */
+/*   Updated: 2021/08/25 19:25:43 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ void	*die(void *philos);
 int		get_time(int start);
 void	my_sleep(int time);
 int		logs(char *status, char *color, t_philo *philo);
-void	all_clear(t_philo *philos, pthread_mutex_t *fork, t_config	config);
+void	all_clear(t_philo *philos, t_config	*config);
 
 #endif

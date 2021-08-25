@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:11 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/24 18:08:16 by demilan          ###   ########.fr       */
+/*   Updated: 2021/08/25 19:24:56 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,8 @@ int	logs(char *status, char *color, t_philo *philo)
 	}
 	time = philo->config->start_time;
 	sem_wait(philo->config->message);
+	printf("%s%d %d %s\n", color, get_time(time), philo->id, status);
 	if (philo->config->die != 1)
-	{
-		if (status == DIE)
-			philo->config->die = 1;
-		printf("%s%d %d %s\n", color, get_time(time), philo->id, status);
-
-	}
-	sem_post(philo->config->message);
+		sem_post(philo->config->message);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:15 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/23 17:51:39 by demilan          ###   ########.fr       */
+/*   Updated: 2021/08/25 21:15:24 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_config
 	int				die;
 	int				start_time;
 	int				eat_now;
+	int				stop;
 	pthread_mutex_t	message;
 }				t_config;
 
@@ -66,12 +67,12 @@ typedef struct s_philo
 	int				last_eat;
 }				t_philo;
 
-int		parce(int argc, char **argv, t_config *new);
-int		start_day(t_philo *philos);
 void	*die(void *philos);
-int		get_time(int start);
 void	my_sleep(int time);
-int		logs(char *status, char *color, t_philo *philo);
 void	all_clear(t_philo *philos, pthread_mutex_t *fork, t_config	config);
+int		get_time(int start);
+int		start_day(t_philo *philos);
+int		parce(int argc, char **argv, t_config *new);
+int		logs(char *status, char *color, t_philo *philo);
 
 #endif

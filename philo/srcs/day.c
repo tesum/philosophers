@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:03 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/23 17:51:31 by demilan          ###   ########.fr       */
+/*   Updated: 2021/08/25 21:11:18 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ int	pdie(t_philo *philo, t_config *cnf)
 {
 	if (get_time(cnf->start_time) - philo->last_eat > cnf->ttd)
 	{
-		logs(DIE, RED, philo);
 		philo->config->die = 1;
+		logs(DIE, RED, philo);
+		philo->config->stop = 1;
 		pthread_mutex_lock(&philo->config->message);
 		return (1);
 	}

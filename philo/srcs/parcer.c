@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:11 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/24 17:57:49 by demilan          ###   ########.fr       */
+/*   Updated: 2021/08/25 21:13:35 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	parce(int argc, char **argv, t_config *new)
 	new->ene = -1;
 	new->die = 0;
 	new->eat_now = 0;
+	new->stop = 0;
 	new->start_time = get_time(0);
 	if (argc == 6)
 	{
@@ -108,12 +109,9 @@ int	logs(char *status, char *color, t_philo *philo)
 	}
 	time = philo->config->start_time;
 	pthread_mutex_lock(&philo->config->message);
-	if (philo->config->die != 1)
-	{
-		if (status == DIE)
-			philo->config->die = 1;
+	if (philo->config->die != 1 || \
+		(philo->config->die && philo->config->stop == 0))
 		printf("%s%d %d %s\n", color, get_time(time), philo->id, status);
-	}
 	pthread_mutex_unlock(&philo->config->message);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:15 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/25 19:25:43 by demilan          ###   ########.fr       */
+/*   Updated: 2021/08/25 20:42:19 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ typedef struct s_philo
 	int			dead;
 }				t_philo;
 
-void	parce(int argc, char **argv, t_config *new);
-int		start_day(t_philo *philos);
 void	*die(void *philos);
-int		get_time(int start);
 void	my_sleep(int time);
-int		logs(char *status, char *color, t_philo *philo);
+void	parce(int argc, char **argv, t_config *new);
 void	all_clear(t_philo *philos, t_config	*config);
+int		start_day(t_philo *philos);
+int		get_time(int start);
+int		logs(char *status, char *color, t_philo *philo);
 
 #endif

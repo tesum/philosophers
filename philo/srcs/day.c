@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   day.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arsenijdrozdov <arsenijdrozdov@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:03 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/25 21:11:18 by demilan          ###   ########.fr       */
+/*   Updated: 2021/09/05 20:25:57 by arsenijdroz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	start_day(t_philo *philos)
 	pthread_t	tid;
 
 	i = 0;
-	if (pthread_create(&tid, NULL, die, (void *)&philos[0]))
+	if (pthread_create(&tid, NULL, die, (void *)philos))
 		return (1);
 	while (i < philos[i].config->count_philo - 1)
 	{
@@ -99,14 +99,6 @@ int	start_day(t_philo *philos)
 
 void	all_clear(t_philo *philos, pthread_mutex_t *fork, t_config	config)
 {
-	int	i;
-
-	i = 0;
-	while (i < config.count_philo)
-	{
-		pthread_mutex_destroy(&fork[i]);
-		i++;
-	}
 	free(fork);
 	free(philos);
 	pthread_mutex_destroy(&config.message);

@@ -6,7 +6,7 @@
 /*   By: arsenijdrozdov <arsenijdrozdov@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:03 by demilan           #+#    #+#             */
-/*   Updated: 2021/09/05 20:25:57 by arsenijdroz      ###   ########.fr       */
+/*   Updated: 2021/09/07 20:26:30 by arsenijdroz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	start_day(t_philo *philos)
 		if (pthread_create(&philos[i].tid, NULL, day, (void *)&philos[i]))
 			return (1);
 		pthread_detach(philos[i].tid);
-		usleep(50);
+		usleep(200);
 		i++;
 	}
 	if (pthread_create(&philos->tid, NULL, day, (void *)&philos[i]))

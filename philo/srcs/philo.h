@@ -6,7 +6,7 @@
 /*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:15 by demilan           #+#    #+#             */
-/*   Updated: 2021/08/25 21:15:24 by demilan          ###   ########.fr       */
+/*   Updated: 2021/10/19 15:25:14 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@
 	THINK	- YELLLOW
 	DIE		- RED
 */
-# define	FORK	" has taken a fork"
-# define	EAT		" is eating"
-# define	SLEEP	" is sleeping"
-# define	THINK	" is thinking"
-# define	DIE		" died"
-# define	RED		"\033[0;31m"
-# define	YELLOW	"\033[0;33m"
-# define	PURPLE	"\033[0;35m"
-# define	CYAN	"\033[0;36m"
-# define	WHITE	"\033[0;37m"
+# define FORK		" has taken a fork"
+# define EAT		" is eating"
+# define SLEEP	" is sleeping"
+# define THINK	" is thinking"
+# define DIE		" died"
+# define RED		"\033[0;31m"
+# define YELLOW	"\033[0;33m"
+# define PURPLE	"\033[0;35m"
+# define CYAN	"\033[0;36m"
+# define WHITE	"\033[0;37m"
 
 /*
 	[int] count philo

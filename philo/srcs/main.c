@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arsenijdrozdov <arsenijdrozdov@student.    +#+  +:+       +#+        */
+/*   By: demilan <demilan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 13:38:08 by demilan           #+#    #+#             */
-/*   Updated: 2021/09/07 20:28:47 by arsenijdroz      ###   ########.fr       */
+/*   Updated: 2021/10/19 15:25:40 by demilan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	give_forks(t_config config, t_philo *philos, pthread_mutex_t *fork)
 	i = 0;
 	while (i < config.count_philo - 1)
 	{
-			philos[i].left = &fork[i];
-			philos[i].right = &fork[i + 1];
+		philos[i].left = &fork[i];
+		philos[i].right = &fork[i + 1];
 		i++;
 	}
 	philos[i].left = &fork[i];
